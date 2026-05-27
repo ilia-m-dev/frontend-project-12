@@ -1,0 +1,25 @@
+{
+  "name": "frontend-project-12",
+  "version": "1.0.0",
+  "description": "[![Actions Status](https://github.com/ilia-m-dev/frontend-project-12/actions/workflows/hexlet-check.yml/badge.svg)](https://github.com/ilia-m-dev/frontend-project-12/actions)",
+  "main": "index.js",
+  "scripts": {
+    "build": "npm run build --prefix frontend",
+    "start": "npx start-server -s ./frontend/dist",
+    "postinstall": "npm ci --prefix frontend"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ilia-m-dev/frontend-project-12.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ilia-m-dev/frontend-project-12/issues"
+  },
+  "homepage": "https://github.com/ilia-m-dev/frontend-project-12#readme",
+  "dependencies": {
+    "@hexlet/chat-server": "^2.0.4"
+  }
+}
