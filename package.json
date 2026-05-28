@@ -4,6 +4,8 @@
   "description": "[![Actions Status](https://github.com/ilia-m-dev/frontend-project-12/actions/workflows/hexlet-check.yml/badge.svg)](https://github.com/ilia-m-dev/frontend-project-12/actions)",
   "main": "index.js",
   "scripts": {
+    "dev": "npm run dev --prefix frontend",
+    "server": "npx @hexlet/chat-server",
     "build": "npm run build --prefix frontend",
     "start": "npx start-server -s ./frontend/dist",
     "postinstall": "npm ci --prefix frontend"
