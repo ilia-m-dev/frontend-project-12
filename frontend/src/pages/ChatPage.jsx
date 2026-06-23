@@ -3,14 +3,17 @@ import axios from 'axios';
 import { Container, Row, Col, Button, Form, Spinner } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { setChannels, setCurrentChannelId } from '../store/slices/channelsSlice.js';
-import { setMessages } from '../store/slices/messagesSlice.js';
+import { setMessages, addMessage } from '../store/slices/messagesSlice.js';
 import useAuth from '../hooks/useAuth.js';
+import { io } from 'socket.io-client';
 
 const ChatPage = () => {
   const dispatch = useDispatch();
   const auth = useAuth();
 
   const [isLoading, setIsLoading] = useState(true);
+  const [messageBody, setMessageBody] = useState('');
+  const [isSending, setIsSending] = useState(false);
 
   const channels = useSelector((state) => state.channels?.items ?? []);
   const currentChannelId = useSelector(
@@ -53,6 +56,19 @@ const ChatPage = () => {
     fetchData();
   }, [auth.user.token, dispatch]);
 
+  useEffect(() => {
+    const socket = io();
+
+    socket.on('newMessage', (payload) => {
+      dispatch(addMessage(payload));
+    });
+
+    return () => {
+      socket.off('newMessage');
+      socket.disconnect();
+    };
+  }, [dispatch]);
+
   if (isLoading) {
     return (
       <Container className="h-100 d-flex justify-content-center align-items-center">
@@ -62,6 +78,34 @@ const ChatPage = () => {
       </Container>
     );
   }
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+
+    const trimmedBody = messageBody.trim();
+
+    if (!trimmedBody) {
+      return;
+    }
+
+    setIsSending(true);
+
+    try {
+      const headers = {
+        Authorization: `Bearer ${auth.user.token}`,
+      };
+
+      await axios.post('/api/v1/messages', {
+        body: trimmedBody,
+        channelId: currentChannelId,
+        username: auth.user.username,
+      }, { headers });
+
+      setMessageBody('');
+    } finally {
+      setIsSending(false);
+    }
+  };
 
   return (
     <Container className="h-100 my-4 overflow-hidden rounded shadow">
@@ -160,6 +204,7 @@ const ChatPage = () => {
               <Form
                 noValidate
                 className="py-1 border rounded-2"
+                onSubmit={handleSubmit}
               >
                 <Form.Group className="input-group has-validation">
                   <Form.Control
@@ -167,12 +212,15 @@ const ChatPage = () => {
                     aria-label="Новое сообщение"
                     placeholder="Введите сообщение..."
                     className="border-0 p-0 ps-2"
+                    value={messageBody}
+                    onChange={(event) => setMessageBody(event.target.value)}
+                    disabled={isSending}
                   />
 
                   <Button
                     type="submit"
                     variant="group-vertical"
-                    disabled
+                    disabled={isSending || !messageBody.trim()}
                   >
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
