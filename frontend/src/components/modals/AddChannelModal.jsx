@@ -9,6 +9,7 @@ import { setCurrentChannelId } from '../../store/slices/channelsSlice.js';
 import useAuth from '../../hooks/useAuth.js';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
+import cleanProfanity from '../../profanityFilter.js';
 
 
 const AddChannelModal = () => {
@@ -50,7 +51,7 @@ const AddChannelModal = () => {
         onSubmit={async (values, { setSubmitting }) => {
           try {
             const response = await axios.post('/api/v1/channels', {
-              name: values.name.trim(),
+              name: cleanProfanity(values.name.trim()),
             }, {
               headers: {
                 Authorization: `Bearer ${auth.user.token}`,

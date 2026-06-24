@@ -12,6 +12,7 @@ import { removeMessageByChannelId } from '../store/slices/messagesSlice.js';
 import Modals from '../components/modals/Modals.jsx';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
+import cleanProfanity from '../profanityFilter.js';
 
 const ChatPage = () => {
   const dispatch = useDispatch();
@@ -121,7 +122,7 @@ const ChatPage = () => {
       };
 
       await axios.post('/api/v1/messages', {
-        body: trimmedBody,
+        body: cleanProfanity(trimmedBody),
         channelId: currentChannelId,
         username: auth.user.username,
       }, { headers });
