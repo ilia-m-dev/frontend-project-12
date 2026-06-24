@@ -10,10 +10,13 @@ import { openModal } from '../store/slices/modalSlice.js';
 import { addChannel, removeChannel, renameChannel } from '../store/slices/channelsSlice.js';
 import { removeMessageByChannelId } from '../store/slices/messagesSlice.js';
 import Modals from '../components/modals/Modals.jsx';
+import { useTranslation } from 'react-i18next';
 
 const ChatPage = () => {
   const dispatch = useDispatch();
   const auth = useAuth();
+  const { t } = useTranslation();
+
 
   const [isLoading, setIsLoading] = useState(true);
   const [messageBody, setMessageBody] = useState('');
@@ -90,7 +93,7 @@ const ChatPage = () => {
     return (
       <Container className="h-100 d-flex justify-content-center align-items-center">
         <Spinner animation="border" role="status">
-          <span className="visually-hidden">Загрузка...</span>
+          <span className="visually-hidden">{t('messages.loading')}</span>
         </Spinner>
       </Container>
     );
@@ -134,7 +137,7 @@ const ChatPage = () => {
             className="border-end px-0 bg-light flex-column h-100 d-flex"
           >
             <div className="d-flex mt-1 justify-content-between mb-2 ps-4 pe-2 p-4">
-              <b>Каналы</b>
+              <b>{t('channels.title')}</b>
 
               <Button
                 type="button"
@@ -181,7 +184,7 @@ const ChatPage = () => {
                         variant={channel.id === currentChannelId ? 'secondary' : ''}
                         className="rounded-0"
                       >
-                        <span className="visually-hidden">Управление каналом</span>
+                        <span className="visually-hidden">{t('channels.manage')}</span>
                       </Dropdown.Toggle>
 
                       <Dropdown.Menu>
@@ -191,7 +194,7 @@ const ChatPage = () => {
                             channelId: channel.id,
                           }))}
                         >
-                          Удалить
+                          {t('channels.remove')}
                         </Dropdown.Item>
 
                         <Dropdown.Item
@@ -200,7 +203,7 @@ const ChatPage = () => {
                             channelId: channel.id,
                           }))}
                         >
-                          Переименовать
+                          {t('channels.rename')}
                         </Dropdown.Item>
                       </Dropdown.Menu>
                     </Dropdown>
@@ -232,9 +235,7 @@ const ChatPage = () => {
                 </p>
 
                 <span className="text-muted">
-                  {currentMessages.length}
-                  {' '}
-                  сообщений
+                  {t('messages.count', { count: currentMessages.length })}
                 </span>
               </div>
 
@@ -263,8 +264,8 @@ const ChatPage = () => {
                   <Form.Group className="input-group has-validation">
                     <Form.Control
                       name="body"
-                      aria-label="Новое сообщение"
-                      placeholder="Введите сообщение..."
+                      aria-label={t('messages.newMessage')}
+                      placeholder={t('messages.placeholder')}
                       className="border-0 p-0 ps-2"
                       value={messageBody}
                       onChange={(event) => setMessageBody(event.target.value)}
@@ -291,7 +292,7 @@ const ChatPage = () => {
                       </svg>
 
                       <span className="visually-hidden">
-                        Отправить
+                        {t('messages.send')}
                       </span>
                     </Button>
                   </Form.Group>

@@ -5,11 +5,13 @@ import loginImage from '../assets/login.jpg';
 import useAuth from '../hooks/useAuth.js';
 import { useState } from 'react';
 import axios from 'axios';
+import { useTranslation } from 'react-i18next';
 
 const LoginPage = () => {
   const auth = useAuth();
   const navigate = useNavigate();
   const [authFailed, setAuthFailed] = useState(false);
+  const { t } = useTranslation();
 
   return (
     <Container fluid className="h-100">
@@ -24,13 +26,13 @@ const LoginPage = () => {
                 >
                   <img
                     src={loginImage}
-                    alt="Войти"
+                    alt={t('auth.login')}
                     className="rounded-circle"
                   />
                 </Col>
 
                 <Col md={6} className="mt-3 mt-md-0">
-                  <h1 className="text-center mb-4">Войти</h1>
+                  <h1 className="text-center mb-4">{t('auth.login')}</h1>
 
                   <Formik
                     initialValues={{
@@ -62,31 +64,31 @@ const LoginPage = () => {
                           <Form.Control
                             name="username"
                             type="text"
-                            placeholder="Ваш ник"
+                            placeholder={t('auth.username')}
                             value={values.username}
                             onChange={handleChange}
                             autoComplete="username"
                             required
                             isInvalid={authFailed}
                           />
-                          <Form.Label>Ваш ник</Form.Label>
+                          <Form.Label>{t('auth.username')}</Form.Label>
                         </Form.Group>
 
                         <Form.Group className="form-floating mb-3">
                           <Form.Control
                             name="password"
                             type="password"
-                            placeholder="Пароль"
+                            placeholder={t('auth.password')}
                             value={values.password}
                             onChange={handleChange}
                             autoComplete="current-password"
                             required
                             isInvalid={authFailed}
                           />
-                          <Form.Label>Пароль</Form.Label>
+                          <Form.Label>{t('auth.password')}</Form.Label>
 
                           <Form.Control.Feedback type="invalid">
-                            Неверные имя пользователя или пароль
+                            {t('auth.authFailed')}
                           </Form.Control.Feedback>
                         </Form.Group>
 
@@ -96,7 +98,7 @@ const LoginPage = () => {
                           className="w-100 mb-3"
                           disabled={isSubmitting}
                         >
-                          Войти
+                          {t('auth.login')}
                         </Button>
                       </Form>
                     )}
@@ -107,8 +109,8 @@ const LoginPage = () => {
 
             <Card.Footer className="p-4">
               <div className="text-center">
-                <span>Нет аккаунта? </span>
-                <Link to="/signup">Регистрация</Link>
+                <span>{t('auth.noAccount')} </span>
+                <Link to="/signup">{t('auth.signup')}</Link>
               </div>
             </Card.Footer>
           </Card>

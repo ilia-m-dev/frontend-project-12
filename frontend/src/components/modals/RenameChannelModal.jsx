@@ -6,11 +6,13 @@ import { useDispatch, useSelector } from 'react-redux';
 import { closeModal } from '../../store/slices/modalSlice.js';
 import axios from 'axios';
 import useAuth from '../../hooks/useAuth.js';
+import { useTranslation } from 'react-i18next';
 
 const RenameChannelModal = () => {
 	const auth = useAuth();
 	const dispatch = useDispatch();
 	const inputRef = useRef(null);
+	const { t } = useTranslation();
 
 	const channelId = useSelector((state) => state.modal.channelId);
 	const channels = useSelector((state) => state.channels.items);
@@ -29,10 +31,10 @@ const RenameChannelModal = () => {
 		name: yup
 			.string()
 			.trim()
-			.required('Обязательное поле')
-			.min(3, 'От 3 до 20 символов')
-			.max(20, 'От 3 до 20 символов')
-			.notOneOf(channelNames, 'Должно быть уникальным'),
+			.required(t('validation.required'))
+			.min(3, t('validation.nameLength'))
+			.max(20, t('validation.nameLength'))
+			.notOneOf(channelNames, t('validation.uniqueChannel')),
 	});
 
 	const handleClose = () => {
@@ -42,7 +44,7 @@ const RenameChannelModal = () => {
 	return (
 		<Modal show centered onHide={handleClose}>
 			<Modal.Header closeButton>
-				<Modal.Title>Переименовать канал</Modal.Title>
+				<Modal.Title>{t('modals.renameChannel.title')}</Modal.Title>
 			</Modal.Header>
 
 			<Formik
@@ -95,11 +97,11 @@ const RenameChannelModal = () => {
 								onClick={handleClose}
 								disabled={isSubmitting}
 							>
-								Отменить
+								{t('modals.renameChannel.cancel')}
 							</Button>
 
 							<Button type="submit" disabled={isSubmitting}>
-								Отправить
+								{t('modals.renameChannel.submit')}
 							</Button>
 						</Modal.Footer>
 					</Form>

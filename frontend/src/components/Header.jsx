@@ -1,10 +1,12 @@
 import { Navbar, Container, Button } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
 import useAuth from '../hooks/useAuth.js';
+import { useTranslation } from 'react-i18next';
 
 const Header = () => {
   const auth = useAuth();
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   const handleLogout = () => {
     auth.logOut();
@@ -15,12 +17,12 @@ const Header = () => {
     <Navbar expand="lg" className="shadow-sm navbar navbar-light bg-white">
       <Container>
         <Navbar.Brand as={Link} to="/">
-          Hexlet Chat
+          {t('appName')}
         </Navbar.Brand>
 
         {auth.user && (
           <Button onClick={handleLogout}>
-            Выйти
+            {t('auth.logout')}
           </Button>
         )}
       </Container>

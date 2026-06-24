@@ -4,12 +4,14 @@ import { useState } from 'react';
 import { closeModal } from '../../store/slices/modalSlice.js';
 import axios from 'axios';
 import useAuth from '../../hooks/useAuth.js';
+import { useTranslation } from 'react-i18next';
 
 const RemoveChannelModal = () => {
   const auth = useAuth();
   const dispatch = useDispatch();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const channelId = useSelector((state) => state.modal.channelId);
+  const { t } = useTranslation();
 
   const handleClose = () => {
     dispatch(closeModal());
@@ -34,11 +36,11 @@ const RemoveChannelModal = () => {
   return (
     <Modal show centered onHide={handleClose}>
       <Modal.Header closeButton>
-        <Modal.Title>Удалить канал</Modal.Title>
+        <Modal.Title>{t('modals.removeChannel.title')}</Modal.Title>
       </Modal.Header>
 
       <Modal.Body>
-        <p className="lead">Уверены?</p>
+        <p className="lead">{t('modals.removeChannel.body')}</p>
       </Modal.Body>
 
       <Modal.Footer>
@@ -47,7 +49,7 @@ const RemoveChannelModal = () => {
           onClick={handleClose}
           disabled={isSubmitting}
         >
-          Отменить
+          {t('modals.removeChannel.cancel')}
         </Button>
 
         <Button
@@ -55,7 +57,7 @@ const RemoveChannelModal = () => {
           onClick={handleRemove}
           disabled={isSubmitting}
         >
-          Удалить
+          {t('modals.removeChannel.submit')}
         </Button>
       </Modal.Footer>
     </Modal>

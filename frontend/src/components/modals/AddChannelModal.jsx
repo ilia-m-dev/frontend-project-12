@@ -7,12 +7,15 @@ import { closeModal } from '../../store/slices/modalSlice.js';
 import axios from 'axios';
 import { setCurrentChannelId } from '../../store/slices/channelsSlice.js';
 import useAuth from '../../hooks/useAuth.js';
+import { useTranslation } from 'react-i18next';
+
 
 const AddChannelModal = () => {
   const auth = useAuth();
   const dispatch = useDispatch();
   const inputRef = useRef(null);
   const channels = useSelector((state) => state.channels.items);
+  const { t } = useTranslation();
 
   useEffect(() => {
     inputRef.current?.focus();
@@ -24,10 +27,10 @@ const AddChannelModal = () => {
     name: yup
       .string()
       .trim()
-      .required('Обязательное поле')
-      .min(3, 'От 3 до 20 символов')
-      .max(20, 'От 3 до 20 символов')
-      .notOneOf(channelNames, 'Должно быть уникальным'),
+      .required(t('validation.required'))
+      .min(3, t('validation.nameLength'))
+      .max(20, t('validation.nameLength'))
+      .notOneOf(channelNames, t('validation.uniqueChannel')),
   });
 
   const handleClose = () => {
@@ -37,7 +40,7 @@ const AddChannelModal = () => {
   return (
     <Modal show centered onHide={handleClose}>
       <Modal.Header closeButton>
-        <Modal.Title>Добавить канал</Modal.Title>
+        <Modal.Title>{t('modals.addChannel.title')}</Modal.Title>
       </Modal.Header>
 
       <Formik
@@ -91,11 +94,11 @@ const AddChannelModal = () => {
                 onClick={handleClose}
                 disabled={isSubmitting}
               >
-                Отменить
+                {t('modals.addChannel.cancel')}
               </Button>
 
               <Button type="submit" disabled={isSubmitting}>
-                Отправить
+                {t('modals.addChannel.submit')}
               </Button>
             </Modal.Footer>
           </Form>
