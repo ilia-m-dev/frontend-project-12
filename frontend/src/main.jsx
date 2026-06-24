@@ -8,15 +8,18 @@ import AuthProvider from './contexts/AuthProvider.jsx';
 import { Provider } from 'react-redux';
 import store from './store/index.js';
 import './i18n.js';
+import RollbarProvider from './components/RollbarProvider.jsx';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <Provider store={store}>
-      <BrowserRouter>
-        <AuthProvider>
-          <App />
-        </AuthProvider>
-      </BrowserRouter>
-    </Provider>
+    <RollbarProvider>
+      <Provider store={store}>
+        <BrowserRouter>
+          <AuthProvider>
+            <App />
+          </AuthProvider>
+        </BrowserRouter>
+      </Provider>
+    </RollbarProvider>
   </React.StrictMode>,
 );
