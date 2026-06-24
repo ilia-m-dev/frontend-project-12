@@ -76,6 +76,7 @@ const SignupPage = () => {
                   <Form onSubmit={handleSubmit}>
                     <Form.Group className="form-floating mb-3">
                       <Form.Control
+                        id="username"
                         name="username"
                         type="text"
                         placeholder={t('auth.usernameSignup')}
@@ -91,7 +92,7 @@ const SignupPage = () => {
                         autoComplete="username"
                         required
                       />
-                      <Form.Label>{t('auth.usernameSignup')}</Form.Label>
+                      <Form.Label htmlFor="username">{t('auth.usernameSignup')}</Form.Label>
                       <Form.Control.Feedback type="invalid">
                         {signupFailed ? t('auth.userExists') : errors.username}
                       </Form.Control.Feedback>
@@ -99,6 +100,7 @@ const SignupPage = () => {
 
                     <Form.Group className="form-floating mb-3">
                       <Form.Control
+                        id="password"
                         name="password"
                         type="password"
                         placeholder={t('auth.password')}
@@ -108,7 +110,7 @@ const SignupPage = () => {
                         autoComplete="new-password"
                         required
                       />
-                      <Form.Label>{t('auth.password')}</Form.Label>
+                      <Form.Label htmlFor="password">{t('auth.password')}</Form.Label>
                       <Form.Control.Feedback type="invalid">
                         {errors.password}
                       </Form.Control.Feedback>
@@ -116,6 +118,7 @@ const SignupPage = () => {
 
                     <Form.Group className="form-floating mb-4">
                       <Form.Control
+                        id="confirmPassword"
                         name="confirmPassword"
                         type="password"
                         placeholder={t('auth.confirmPassword')}
@@ -127,7 +130,7 @@ const SignupPage = () => {
                         autoComplete="new-password"
                         required
                       />
-                      <Form.Label>{t('auth.confirmPassword')}</Form.Label>
+                      <Form.Label htmlFor="confirmPassword">{t('auth.confirmPassword')}</Form.Label>
                       <Form.Control.Feedback type="invalid">
                         {errors.confirmPassword}
                       </Form.Control.Feedback>

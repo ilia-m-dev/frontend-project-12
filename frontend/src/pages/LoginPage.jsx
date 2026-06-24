@@ -62,6 +62,7 @@ const LoginPage = () => {
                       <Form onSubmit={handleSubmit}>
                         <Form.Group className="form-floating mb-3">
                           <Form.Control
+                            id="username"
                             name="username"
                             type="text"
                             placeholder={t('auth.username')}
@@ -71,11 +72,12 @@ const LoginPage = () => {
                             required
                             isInvalid={authFailed}
                           />
-                          <Form.Label>{t('auth.username')}</Form.Label>
+                          <Form.Label htmlFor="username">{t('auth.username')}</Form.Label>
                         </Form.Group>
 
                         <Form.Group className="form-floating mb-3">
                           <Form.Control
+                            id="password"
                             name="password"
                             type="password"
                             placeholder={t('auth.password')}
@@ -85,7 +87,7 @@ const LoginPage = () => {
                             required
                             isInvalid={authFailed}
                           />
-                          <Form.Label>{t('auth.password')}</Form.Label>
+                          <Form.Label htmlFor="password">{t('auth.password')}</Form.Label>
 
                           <Form.Control.Feedback type="invalid">
                             {t('auth.authFailed')}
