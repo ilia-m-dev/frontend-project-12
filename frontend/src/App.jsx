@@ -4,6 +4,7 @@ import ChatPage from './pages/ChatPage.jsx';
 import LoginPage from './pages/LoginPage.jsx';
 import NotFoundPage from './pages/NotFoundPage.jsx';
 import useAuth from './hooks/useAuth.js';
+import SignupPage from './pages/SignupPage.jsx';
 
 const PrivateRoute = ({ children }) => {
   const auth = useAuth();
@@ -26,6 +27,7 @@ const App = () => (
       />
 
       <Route path="/login" element={<LoginPage />} />
+      <Route path="/signup" element={<SignupPage />} />
       <Route path="/404" element={<NotFoundPage />} />
       <Route path="*" element={<Navigate to="/404" replace />} />
     </Routes>
