@@ -81,9 +81,14 @@ const AddChannelModal = () => {
           <Form onSubmit={handleSubmit}>
             <Modal.Body>
               <Form.Group>
+                <Form.Label htmlFor="channel-name" className="visually-hidden">
+                  {t('channels.name')}
+                </Form.Label>
                 <Form.Control
+                  id="channel-name"
                   ref={inputRef}
                   name="name"
+                  aria-label={t('channels.name')}
                   value={values.name}
                   onChange={handleChange}
                   isInvalid={touched.name && errors.name}

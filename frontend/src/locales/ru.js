@@ -30,6 +30,7 @@ export default {
     channels: {
       title: 'Каналы',
       add: 'Добавить канал',
+      name: 'Имя канала',
       remove: 'Удалить',
       rename: 'Переименовать',
       manage: 'Управление каналом',
@@ -76,7 +77,7 @@ export default {
     toasts: {
       channelCreated: 'Канал создан',
       channelRenamed: 'Канал переименован',
-      channelRemoved: 'Канал удален',
+      channelRemoved: 'Канал удалён',
     },
 
     errors: {
