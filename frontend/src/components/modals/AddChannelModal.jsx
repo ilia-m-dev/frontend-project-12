@@ -8,6 +8,7 @@ import axios from 'axios';
 import { setCurrentChannelId } from '../../store/slices/channelsSlice.js';
 import useAuth from '../../hooks/useAuth.js';
 import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
 
 
 const AddChannelModal = () => {
@@ -58,6 +59,11 @@ const AddChannelModal = () => {
 
             dispatch(setCurrentChannelId(response.data.id));
             dispatch(closeModal());
+            toast.success(t('toasts.channelCreated'));
+          } catch (error) {
+            if (!error.response) {
+              toast.error(t('errors.network'));
+            }
           } finally {
             setSubmitting(false);
           }

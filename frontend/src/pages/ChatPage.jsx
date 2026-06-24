@@ -11,6 +11,7 @@ import { addChannel, removeChannel, renameChannel } from '../store/slices/channe
 import { removeMessageByChannelId } from '../store/slices/messagesSlice.js';
 import Modals from '../components/modals/Modals.jsx';
 import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
 
 const ChatPage = () => {
   const dispatch = useDispatch();
@@ -55,13 +56,17 @@ const ChatPage = () => {
         }));
 
         dispatch(setMessages(messagesResponse.data));
+      } catch (error) {
+        const message = error.response ? t('errors.loadingData') : t('errors.network');
+
+        toast.error(message, { toastId: 'loading-data-error' });
       } finally {
         setIsLoading(false);
       }
     };
 
     fetchData();
-  }, [auth.user.token, dispatch]);
+  }, [auth.user.token, dispatch, t]);
 
   useEffect(() => {
     socket.on('newMessage', (payload) => {

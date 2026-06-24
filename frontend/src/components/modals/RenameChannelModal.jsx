@@ -7,6 +7,7 @@ import { closeModal } from '../../store/slices/modalSlice.js';
 import axios from 'axios';
 import useAuth from '../../hooks/useAuth.js';
 import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
 
 const RenameChannelModal = () => {
 	const auth = useAuth();
@@ -61,6 +62,11 @@ const RenameChannelModal = () => {
 						});
 
 						dispatch(closeModal());
+						toast.success(t('toasts.channelRenamed'));
+					} catch (error) {
+						if (!error.response) {
+							toast.error(t('errors.network'));
+						}
 					} finally {
 						setSubmitting(false);
 					}

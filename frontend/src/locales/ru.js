@@ -15,6 +15,7 @@ export default {
       signup: 'Регистрация',
 
       username: 'Ваш ник',
+      usernameSignup: 'Имя пользователя',
       password: 'Пароль',
       confirmPassword: 'Подтвердите пароль',
 
@@ -23,6 +24,7 @@ export default {
 
       authFailed: 'Неверные имя пользователя или пароль',
       userExists: 'Такой пользователь уже существует',
+      signupSubmit: 'Зарегистрироваться',
     },
 
     channels: {
@@ -35,23 +37,56 @@ export default {
 
     messages: {
       send: 'Отправить',
+      newMessage: 'Новое сообщение',
       placeholder: 'Введите сообщение...',
-      count: 'сообщений',
+      loading: 'Загрузка...',
+      count_one: '{{count}} сообщение',
+      count_few: '{{count}} сообщения',
+      count_many: '{{count}} сообщений',
+      count_other: '{{count}} сообщений',
     },
 
     modals: {
-      addChannel: 'Добавить канал',
-      renameChannel: 'Переименовать канал',
-      removeChannel: 'Удалить канал',
-      confirmDelete: 'Уверены?',
+      addChannel: {
+        title: 'Добавить канал',
+        cancel: 'Отменить',
+        submit: 'Отправить',
+      },
+      renameChannel: {
+        title: 'Переименовать канал',
+        cancel: 'Отменить',
+        submit: 'Отправить',
+      },
+      removeChannel: {
+        title: 'Удалить канал',
+        body: 'Уверены?',
+        cancel: 'Отменить',
+        submit: 'Удалить',
+      },
     },
 
     validation: {
       required: 'Обязательное поле',
-      usernameLength: 'От 3 до 20 символов',
+      nameLength: 'От 3 до 20 символов',
       passwordLength: 'Не менее 6 символов',
       passwordsMustMatch: 'Пароли должны совпадать',
       uniqueChannel: 'Должно быть уникальным',
+    },
+
+    toasts: {
+      channelCreated: 'Канал создан',
+      channelRenamed: 'Канал переименован',
+      channelRemoved: 'Канал удален',
+    },
+
+    errors: {
+      loadingData: 'Ошибка загрузки данных',
+      network: 'Ошибка соединения',
+    },
+
+    notFound: {
+      title: 'Страница не найдена.',
+      link: 'На главную',
     },
   },
 };

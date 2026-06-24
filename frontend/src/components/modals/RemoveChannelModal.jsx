@@ -5,6 +5,7 @@ import { closeModal } from '../../store/slices/modalSlice.js';
 import axios from 'axios';
 import useAuth from '../../hooks/useAuth.js';
 import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
 
 const RemoveChannelModal = () => {
   const auth = useAuth();
@@ -28,6 +29,11 @@ const RemoveChannelModal = () => {
       });
 
       dispatch(closeModal());
+      toast.success(t('toasts.channelRemoved'));
+    } catch (error) {
+      if (!error.response) {
+        toast.error(t('errors.network'));
+      }
     } finally {
       setIsSubmitting(false);
     }
