@@ -13,6 +13,20 @@ const LoginPage = () => {
   const [authFailed, setAuthFailed] = useState(false);
   const { t } = useTranslation();
 
+  const handleLogin = async (values, { setSubmitting }) => {
+    setAuthFailed(false);
+
+    try {
+      const response = await axios.post('/api/v1/login', values);
+
+      auth.logIn(response.data);
+      navigate('/', { replace: true });
+    } catch {
+      setAuthFailed(true);
+      setSubmitting(false);
+    }
+  };
+
   return (
     <Container fluid className="h-100">
       <Row className="justify-content-center align-content-center h-100">
@@ -39,19 +53,7 @@ const LoginPage = () => {
                       username: '',
                       password: '',
                     }}
-                    onSubmit={async (values, { setSubmitting }) => {
-                      setAuthFailed(false);
-
-                      try {
-                        const response = await axios.post('/api/v1/login', values);
-
-                        auth.logIn(response.data);
-                        navigate('/', { replace: true });
-                      } catch {
-                        setAuthFailed(true);
-                        setSubmitting(false);
-                      }
-                    }}
+                    onSubmit={handleLogin}
                   >
                     {({
                       handleSubmit,

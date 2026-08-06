@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react';
 import { Modal, Button, Form } from 'react-bootstrap';
 import { Formik } from 'formik';
-import * as yup from 'yup';
+import createChannelSchema from '../../schemas/channelSchema.js';
 import { useDispatch, useSelector } from 'react-redux';
 import { closeModal } from '../../store/slices/modalSlice.js';
 import axios from 'axios';
@@ -28,19 +28,32 @@ const RenameChannelModal = () => {
 		.filter(({ id }) => id !== channelId)
 		.map(({ name }) => name);
 
-	const validationSchema = yup.object({
-		name: yup
-			.string()
-			.trim()
-			.required(t('validation.required'))
-			.min(3, t('validation.nameLength'))
-			.max(20, t('validation.nameLength'))
-			.notOneOf(channelNames, t('validation.uniqueChannel')),
-	});
+	const validationSchema = createChannelSchema(t, channelNames);
 
 	const handleClose = () => {
 		dispatch(closeModal());
 	};
+
+	const handleRename = async (values, { setSubmitting }) => {
+		try {
+			await axios.patch(`/api/v1/channels/${channelId}`, {
+				name: values.name.trim(),
+			}, {
+				headers: {
+					Authorization: `Bearer ${auth.user.token}`,
+				},
+			});
+
+			dispatch(closeModal());
+			toast.success(t('toasts.channelRenamed'));
+		} catch (error) {
+			if (!error.response) {
+				toast.error(t('errors.network'));
+			}
+		} finally {
+			setSubmitting(false);
+		}
+	}
 
 	return (
 		<Modal show centered onHide={handleClose}>
@@ -51,26 +64,7 @@ const RenameChannelModal = () => {
 			<Formik
 				initialValues={{ name: currentChannel?.name ?? '' }}
 				validationSchema={validationSchema}
-				onSubmit={async (values, { setSubmitting }) => {
-					try {
-						await axios.patch(`/api/v1/channels/${channelId}`, {
-							name: values.name.trim(),
-						}, {
-							headers: {
-								Authorization: `Bearer ${auth.user.token}`,
-							},
-						});
-
-						dispatch(closeModal());
-						toast.success(t('toasts.channelRenamed'));
-					} catch (error) {
-						if (!error.response) {
-							toast.error(t('errors.network'));
-						}
-					} finally {
-						setSubmitting(false);
-					}
-				}}
+				onSubmit={handleRename}
 			>
 				{({
 					values,

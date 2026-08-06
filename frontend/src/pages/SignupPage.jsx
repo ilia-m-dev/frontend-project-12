@@ -3,7 +3,7 @@ import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
 import { Container, Row, Col, Card, Form, Button } from 'react-bootstrap';
 import { Formik } from 'formik';
-import * as yup from 'yup';
+import createSignupSchema from '../schemas/signupSchema.js';
 import useAuth from '../hooks/useAuth.js';
 import { useTranslation } from 'react-i18next';
 
@@ -12,23 +12,27 @@ const SignupPage = () => {
   const navigate = useNavigate();
   const [signupFailed, setSignupFailed] = useState(false);
   const { t } = useTranslation();
+  const validationSchema = createSignupSchema(t);
 
-  const validationSchema = yup.object({
-    username: yup
-      .string()
-      .trim()
-      .required(t('validation.required'))
-      .min(3, t('validation.nameLength'))
-      .max(20, t('validation.nameLength')),
-    password: yup
-      .string()
-      .required(t('validation.required'))
-      .min(6, t('validation.passwordLength')),
-    confirmPassword: yup
-      .string()
-      .required(t('validation.required'))
-      .oneOf([yup.ref('password')], t('validation.passwordsMustMatch')),
-  });
+  const handleSignup = async (values, { setSubmitting }) => {
+    setSignupFailed(false);
+
+    try {
+      const response = await axios.post('/api/v1/signup', {
+        username: values.username.trim(),
+        password: values.password,
+      });
+
+      auth.logIn(response.data);
+      navigate('/', { replace: true });
+    } catch (error) {
+      if (error.response?.status === 409) {
+        setSignupFailed(true);
+      }
+    } finally {
+      setSubmitting(false);
+    }
+  };
 
   return (
     <Container fluid className="h-100">
@@ -45,25 +49,7 @@ const SignupPage = () => {
                   confirmPassword: '',
                 }}
                 validationSchema={validationSchema}
-                onSubmit={async (values, { setSubmitting }) => {
-                  setSignupFailed(false);
-
-                  try {
-                    const response = await axios.post('/api/v1/signup', {
-                      username: values.username.trim(),
-                      password: values.password,
-                    });
-
-                    auth.logIn(response.data);
-                    navigate('/', { replace: true });
-                  } catch (error) {
-                    if (error.response?.status === 409) {
-                      setSignupFailed(true);
-                    }
-                  } finally {
-                    setSubmitting(false);
-                  }
-                }}
+                onSubmit={handleSignup}
               >
                 {({
                   values,

@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react';
 import { Modal, Button, Form } from 'react-bootstrap';
 import { Formik } from 'formik';
-import * as yup from 'yup';
+import createChannelSchema from '../../schemas/channelSchema.js';
 import { useDispatch, useSelector } from 'react-redux';
 import { closeModal } from '../../store/slices/modalSlice.js';
 import axios from 'axios';
@@ -25,15 +25,7 @@ const AddChannelModal = () => {
 
   const channelNames = channels.map(({ name }) => name);
 
-  const validationSchema = yup.object({
-    name: yup
-      .string()
-      .trim()
-      .required(t('validation.required'))
-      .min(3, t('validation.nameLength'))
-      .max(20, t('validation.nameLength'))
-      .notOneOf(channelNames, t('validation.uniqueChannel')),
-  });
+  const validationSchema = createChannelSchema(t, channelNames);
 
   const handleClose = () => {
     dispatch(closeModal());
